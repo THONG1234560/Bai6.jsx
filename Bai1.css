@@ -1,0 +1,70 @@
+.gradient-custom {
+  width: 1000px;
+  height: 500px;
+  background: radial-gradient(50% 123.47% at 50% 50%, #00ff94 0%, #720059 100%),
+    linear-gradient(121.28deg, #669600 0%, #ff0000 100%),
+    linear-gradient(360deg, #0029ff 0%, #8fff00 100%),
+    radial-gradient(100% 164.72% at 100% 100%, #6100ff 0%, #00ff57 100%),
+    radial-gradient(100% 148.07% at 0% 0%, #fff500 0%, #51d500 100%);
+  background-blend-mode: screen, color-dodge, overlay, difference, normal;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.form-control {
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.btn {
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.list-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+.btn-danger{
+  margin-left: auto;
+  background-color: black;
+  color: white;
+}
+.btn-warning {
+    position: absolute;
+    margin-left: 730px;
+    background-color: black;
+    color: white;
+}
+.form-outline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-control {
+  flex-grow: 1;
+}
+
+
