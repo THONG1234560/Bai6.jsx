@@ -1,0 +1,46 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import "./AddBai2.css";
+
+const EditUser = () => {
+  const { email } = useParams();
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({ username: "", password: "", role: "Nhân viên" });
+
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const selectedUser = users.find(user => user.email === email);
+    if (!selectedUser) navigate("/");
+    setUserData(selectedUser);
+  }, [email]);
+
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    users = users.map(user => user.email === email ? userData : user);
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Cập nhật thông tin thành công!");
+    navigate("/");
+  };
+
+  return (
+    <div>
+      <h2>Chỉnh sửa nhân viên</h2>
+      <form onSubmit={handleSubmit}>
+        <label>Họ và tên:</label>
+        <input type="text" name="username" value={userData.username} onChange={handleChange} required />
+
+        <label>Mật khẩu:</label>
+        <input type="password" name="password" value={userData.password} onChange={handleChange} required />
+
+        <button type="submit">Cập nhật</button>
+      </form>
+    </div>
+  );
+};
+
+export default EditUser;
