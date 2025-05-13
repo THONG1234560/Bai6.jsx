@@ -1,0 +1,98 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Bai2.css";
+
+const EmployeeList = () => {
+  const [employees, setEmployees] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [employeesPerPage] = useState(5); // Adjustable number of employees per page
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedEmployees = JSON.parse(localStorage.getItem("users")) || [];
+    setEmployees(storedEmployees);
+  }, []);
+
+  const totalPages = Math.ceil(employees.length / employeesPerPage);
+  const indexOfLastEmployee = currentPage * employeesPerPage;
+  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
+  const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const deleteUser = (id) => {
+    const updatedEmployees = employees.filter(user => user.id !== id);
+    localStorage.setItem("users", JSON.stringify(updatedEmployees));
+    setEmployees(updatedEmployees);
+  };
+
+  const toggleStatus = (id) => {
+    const updatedEmployees = employees.map((user) => 
+      user.id === id ? { ...user, status: user.status === "active" ? "blocked" : "active" } : user
+    );
+  
+    localStorage.setItem("users", JSON.stringify(updatedEmployees));
+    setEmployees(updatedEmployees);
+  };
+
+  return (
+    <div className="main">
+      <h1>Danh Sách Nhân Viên</h1>
+      <button className="button button-block" onClick={() => navigate("/add-edit-user")}>
+        Thêm mới nhân viên
+      </button>
+
+      <table className="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Họ và Tên</th>
+            <th>Email</th>
+            <th>Ngày sinh</th>
+            <th>Địa chỉ</th>
+            <th>Trạng thái</th>
+            <th>Chức năng</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentEmployees.map((emp, index) => (
+            <tr key={emp.id}>
+              <td>{indexOfFirstEmployee + index + 1}</td>
+              <td>{emp.username}</td>
+              <td>{emp.email}</td>
+              <td>{emp.birthday}</td>
+              <td>{emp.address}</td>
+              <td>
+                <span className={emp.status === "active" ? "status-active" : "status-blocked"}>
+                  {emp.status === "active" ? "Hoạt động" : "Không hoạt động"}
+                </span>
+              </td>
+              <td className="action-buttons">
+                <button className="button button-edit" onClick={() => navigate(`/add-edit-user/${emp.id}`)}>Sửa</button>
+                <button className="button button-delete" onClick={() => deleteUser(emp.id)}>Xóa</button>
+                <button className="button button-block" onClick={() => toggleStatus(emp.id)}>
+                  {emp.status === "active" ? "Chặn" : "Bỏ chặn"}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Pagination Controls */}
+      <div className="pagination">
+        <button onClick={prevPage} disabled={currentPage === 1}>Back</button>
+        <span>Trang {currentPage} / {totalPages}</span>
+        <button onClick={nextPage} disabled={currentPage === totalPages}>Next</button>
+      </div>
+    </div>
+  );
+};
+
+export default EmployeeList;
