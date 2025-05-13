@@ -1,0 +1,16 @@
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import EmployeeList from "./EmployeeList";
+import AddEditUser from "./AddUser";
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<EmployeeList />} />
+        <Route path="/add-edit-user/:id?" element={<AddEditUser />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
